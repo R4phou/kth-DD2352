@@ -33,7 +33,8 @@ def coin_change_exhaustive(n):
     elif n == 0:
         return 0
     else:
-        return min(coin_change_exhaustive(n - VALUES[i]) + 1 for i in range(len(VALUES)))
+        min_temp = min(coin_change_exhaustive(n - VALUES[i]) + 1 for i in range(len(VALUES)))
+        return min(n, min_temp)
     
 def bottom_up(n):
     table = [0] * (n + 1)

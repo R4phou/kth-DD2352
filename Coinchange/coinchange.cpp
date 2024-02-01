@@ -99,13 +99,16 @@ int main() {
     coin.result = number;
     coin.time = delta;
     std::cout << "Test for n = " << n << " -> " << coin_change_memo(n) << std::endl;
-    print_in_file({coin}, "./memo_add.txt");
+    print_in_file({coin}, "./outputs/memo_add.txt");
+
     auto times_memo_add = test_limits_addition();
+    print_in_file(times_memo_add, "./outputs/memo_add.txt");
     std::cout << "Times_memo_Add done" << std::endl;
+
     auto times_memo_mult = test_limits_multiplication();
+    print_in_file(times_memo_mult, "./outputs/memo_mult.txt");
     std::cout << "Times_memo_Mult done" << std::endl;
-    print_in_file(times_memo_add, "./memo_add.txt");
-    print_in_file(times_memo_mult, "./memo_mult.txt");
-    // Call the plot_times function if you have a C++ plotting library or use an external tool.
+    
+    
     return 0;
 }
