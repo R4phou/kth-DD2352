@@ -39,7 +39,11 @@ def coin_change_exhaustive(n):
 def bottom_up(n):
     table = [0] * (n + 1)
     for i in range(1, n + 1):
-        table[i] = min(table[i - VALUES[j]] + 1 for j in range(len(VALUES)) if i >= VALUES[j])
+        min_val = float('inf')
+        for j in range(len(VALUES)):
+            if i >= VALUES[j]:
+                min_val = min(min_val, table[i - VALUES[j]] + 1)
+        table[i] = min_val
     return table[n]
 
 def test_limits_addition_memo():
