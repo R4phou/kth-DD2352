@@ -9,23 +9,25 @@ sys.setrecursionlimit(LIMIT)
 P = 0.99
 K = -1
 MEMOIZATION = -1
+I = 1
 
 
-def winning_streak_memo(x, y):
-    global MEMOIZATION
-    if MEMOIZATION[y][x] != -1:
-        return MEMOIZATION[y][x]
-    if y == 0:
-        MEMOIZATION[y][x] = 1
-        return 1
-    if x == 0 and y > 0:
-        MEMOIZATION[y][x] = 0
+def winning_streak_imp_memo(x):
+    global MEMOIZATION, I
+    I += 1
+    if x < K:
+        MEMOIZATION[x] = 0
         return 0
-    if x >= 1 and y >= 1:
-        MEMOIZATION[y][x] = P * winning_streak_memo(x - 1, y - 1) + (
-            1 - P
-        ) * winning_streak_memo(x - 1, K)
-        return MEMOIZATION[y][x]
+    if x == K:
+        MEMOIZATION[x] = P**K
+        return MEMOIZATION[x]
+    if MEMOIZATION[x] != -1:
+        return MEMOIZATION[x]
+    else:  # if x >= k+1
+        MEMOIZATION[x] = winning_streak_imp_memo(x - 1) + P**K * (1 - P) * (
+            1 - winning_streak_imp_memo(x - K - 1)
+        )
+        return MEMOIZATION[x]
 
 
 def find_limit():
@@ -33,11 +35,12 @@ def find_limit():
     results = []
     n = 2
     delta = 0
-    while delta < 1:  # 1 second
+    while delta < 1 and n < 4332:  # 1 second
         K = n // 2
-        MEMOIZATION = np.full((K + 1, n + 1), -1, float)
+        MEMOIZATION = np.full(n + 1, -1, float)
+        print(n)
         t0 = t.time()
-        number = winning_streak_memo(n, K)
+        number = winning_streak_imp_memo(n)
         delta = t.time() - t0
         # print(n, delta, number)
         n += 10
@@ -50,11 +53,12 @@ def find_limit_mult():
     results = []
     n = 2
     delta = 0
-    while delta < 1:  # 1 second
+    while delta < 1 and n < 4332:  # 1 second
         K = n // 2
-        MEMOIZATION = np.full((K + 1, n + 1), -1, float)
+        print(n)
+        MEMOIZATION = np.full(n + 1, -1, float)
         t0 = t.time()
-        number = winning_streak_memo(n, K)
+        number = winning_streak_imp_memo(n)
         delta = t.time() - t0
         # print(n, delta, number)
         n *= 2
@@ -69,7 +73,7 @@ def plot_results(results, results_mult):
     y = [i[1] for i in results]
     x_mult = [i[0] for i in results_mult]
     y_mult = [i[1] for i in results_mult]
-    plt.title("Memoization Winning Streak")
+    plt.title("Memoization Winning Streak improved")
     plt.plot(x, y, color="green", label="n + 10", marker="o", linestyle="solid")
     plt.plot(x_mult, y_mult, color="red", label="n * 2", marker="o", linestyle="solid")
     plt.xlabel("n")
@@ -85,10 +89,20 @@ def print_results_in_file(results, file):
 def main():
     results = find_limit()
     results_mult = find_limit_mult()
-    print("results: ", results)
+    # print("results: ", results)
     plot_results(results, results_mult)
-    print_results_in_file(results, "./outputs/ex2b_results_add.csv")
-    print_results_in_file(results_mult, "./outputs/ex2b_results_mult.csv")
+    print(I)
+    print_results_in_file(results, "./outputs/ex2d_results_add.csv")
+    print_results_in_file(results_mult, "./outputs/ex2d_results_mult.csv")
 
 
-main()
+def plot_from_file():
+    import matplotlib.pyplot as plt
+
+    results = np.genfromtxt("./outputs/ex2d_results_add.csv", delimiter=",")
+    results_mult = np.genfromtxt("./outputs/ex2d_results_mult.csv", delimiter=",")
+    plot_results(results, results_mult)
+
+
+# main()
+plot_from_file()
