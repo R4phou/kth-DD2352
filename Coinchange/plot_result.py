@@ -4,9 +4,9 @@ import numpy as np
 
 def plot_memo():
     # amount,result,time
-    addition = np.genfromtxt('./memo_add.txt', delimiter=',', skip_header=1)
+    addition = np.genfromtxt('./outputs/memo_add.txt', delimiter=',', skip_header=1)
     print(addition)
-    multiplication = np.genfromtxt('./memo_mult.txt', delimiter=',', skip_header=1)
+    multiplication = np.genfromtxt('./outputs/memo_mult.txt', delimiter=',', skip_header=1)
     print(multiplication)
 
     amount_add = [t[0] for t in addition]
@@ -14,12 +14,12 @@ def plot_memo():
     amount_mult = [t[0] for t in multiplication]
     time_mult = [t[2] for t in multiplication]
     plt.title("Coin Change Memoisation")
-    plt.plot(amount_add, time_add, color="red", marker="o", linestyle="solid")
-    plt.plot(amount_mult, time_mult, color="blue", marker="o", linestyle="solid")
+    plt.plot(amount_add, time_add, color="red")
+    plt.plot(amount_mult, time_mult, color="blue")
     plt.legend(["Addition", "Multiplication"])
     plt.xlabel("n")
     plt.ylabel("time")
-    plt.savefig('memo.png')
+    plt.savefig('memo-C-1s.png')
     plt.show()
 
 
@@ -44,4 +44,4 @@ def plot_exhaust():
     plt.show()
 
 
-plot_exhaust()
+plot_memo()

@@ -11,12 +11,12 @@ struct coin_try {
     double time;
 };
 
-float LIMIT = 0.001;
+float LIMIT = 1;
 int VALUES[] = {1, 5, 6, 7};
-std::vector<int> MEMOIZATION(10000, -1);
+std::vector<int> MEMOIZATION(1000, -1);
 
-void reset_memoization() {
-    std::fill(MEMOIZATION.begin(), MEMOIZATION.end(), -1);
+void reset_memoization(int n) {
+    MEMOIZATION = std::vector<int>(n, -1);
 }
 
 int coin_change_memo(int n) {
@@ -40,18 +40,22 @@ int coin_change_memo(int n) {
 std::vector<coin_try> test_limits_addition() {
     std::vector<coin_try> times;
     coin_try coin;
-    int n = 5;
+    int n = 100;
     double delta = 0;
-    while (delta < (int) LIMIT/2) {
+    while (delta < LIMIT/4) {
+        reset_memoization(n);
         clock_t t0 = clock();
         int number = coin_change_memo(n);
         delta = (clock() - t0) / static_cast<double>(CLOCKS_PER_SEC);
-        reset_memoization();
         coin.amount = n;
         coin.result = number;
         coin.time = delta;
         times.push_back(coin);
-        n += 1;
+        n += 100;
+        if (n % 1000 == 0) {
+            std::cout << n<< " | ";
+            std::cout << delta << " s" << std::endl;
+        }
     }
     return times;
 }
@@ -62,15 +66,19 @@ std::vector<coin_try> test_limits_multiplication() {
     int n = 5;
     double delta = 0;
     while (delta < LIMIT) {
+        reset_memoization(n);
         clock_t t0 = clock();
         int number = coin_change_memo(n);
         delta = (clock() - t0) / static_cast<double>(CLOCKS_PER_SEC);
-        reset_memoization();
         coin.amount = n;
         coin.result = number;
         coin.time = delta;
         times.push_back(coin);
         n *= 2;
+        if (n % 1000 < 50) {
+            std::cout << n;
+            std::cout << delta << " s" << std::endl;
+        }
     }
     return times;
 }
@@ -89,17 +97,9 @@ void print_in_file(std::vector<coin_try> times, std::string title){
 }
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    int n = 500;
-    clock_t t0 = clock();
-    int number = coin_change_memo(n);
-    double delta = (clock() - t0) / static_cast<double>(CLOCKS_PER_SEC);
-    coin_try coin;
-    coin.amount = n;
-    coin.result = number;
-    coin.time = delta;
-    std::cout << "Test for n = " << n << " -> " << coin_change_memo(n) << std::endl;
-    print_in_file({coin}, "./outputs/memo_add.txt");
+    std::cout << "Starting tests" << std::endl;
+    // int result = coin_change_memo(15);
+    // std::cout << "Result: " << result << std::endl;
 
     auto times_memo_add = test_limits_addition();
     print_in_file(times_memo_add, "./outputs/memo_add.txt");
@@ -107,8 +107,6 @@ int main() {
 
     auto times_memo_mult = test_limits_multiplication();
     print_in_file(times_memo_mult, "./outputs/memo_mult.txt");
-    std::cout << "Times_memo_Mult done" << std::endl;
-    
-    
+    std::cout << "Times_memo_Mult done" << std::endl; 
     return 0;
 }
