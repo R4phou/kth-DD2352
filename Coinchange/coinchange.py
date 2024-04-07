@@ -14,7 +14,7 @@ def reset_memoization():
     MEMOIZATION = [-1] * 10000
 
 
-def coin_change_memo(n):
+def coin_change_memo(n):  # 1C
     global MEMOIZATION
     if n < 0:
         return 100000000
@@ -27,24 +27,29 @@ def coin_change_memo(n):
         MEMOIZATION[n] = min(n, min_tot)
         return MEMOIZATION[n]
 
-def coin_change_exhaustive(n):
+
+def coin_change_exhaustive(n):  # 1A
     if n < 0:
         return 100000000
     elif n == 0:
         return 0
     else:
-        min_temp = min(coin_change_exhaustive(n - VALUES[i]) + 1 for i in range(len(VALUES)))
+        min_temp = min(
+            coin_change_exhaustive(n - VALUES[i]) + 1 for i in range(len(VALUES))
+        )
         return min(n, min_temp)
-    
+
+
 def bottom_up(n):
     table = [0] * (n + 1)
     for i in range(1, n + 1):
-        min_val = float('inf')
+        min_val = float("inf")
         for j in range(len(VALUES)):
             if i >= VALUES[j]:
                 min_val = min(min_val, table[i - VALUES[j]] + 1)
         table[i] = min_val
     return table[n]
+
 
 def test_limits_addition_memo():
     global VALUES
@@ -123,11 +128,8 @@ def plot_times(timesadd, timesmult, title):
     plt.legend(["Addition", "Multiplication"])
     plt.xlabel("n")
     plt.ylabel("time")
-    plt.savefig(title + '.png')
+    plt.savefig(title + ".png")
     plt.show()
-
-
-
 
 
 def ask_user_input():
@@ -151,5 +153,6 @@ def test(algo):
     timesadd = test_limits_addition(algo, factor=10000)
     timesmult = test_limits_multiplication(algo)
     plot_times(timesadd, timesmult, "Coin Change Bottom Up")
+
 
 test(bottom_up)
