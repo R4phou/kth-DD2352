@@ -17,8 +17,6 @@ scenes.append((2, 3))
 
 for _ in range(E):
     u, v = map(int, input().split())
-    if u == v:
-        continue
     if u not in seenRoles:
         n += 1
         seenRoles[u] = n
