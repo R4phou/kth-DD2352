@@ -28,22 +28,22 @@ def perform_reduction(V, E, m, edges):
         print(f"2 {E+1} {i}")
         print(f"2 {E+2} {i}")
 # Example 
-# V = 3
-# E = 3
-# m = 3
-# edges = [(1, 2), (2, 3), (3, 1)]
+V = 3
+E = 3
+m = 3
+edges = [(1, 2), (2, 3), (3, 1)]
 
-# # Initialize variables
-V = int(input())
-E = int(input())
-m = int(input())
-edges = []
+# # # Initialize variables
+# V = int(input())
+# E = int(input())
+# m = int(input())
+# edges = []
 
-# Read edges
-for line in range(E):
-    line = input()
-    line = line.split()
-    edges.append((int(line[0]), int(line[1])))
+# # Read edges
+# for line in range(E):
+#     line = input()
+#     line = line.split()
+#     edges.append((int(line[0]), int(line[1])))
 # print("Solution:")
 
 perform_reduction(V, E, m, edges)
