@@ -1,33 +1,34 @@
 def perform_reduction(V, E, m, edges):
     noRoles = V + 2
     noActors = m + 2
-    noScenes = E + V*2
-    
+    noScenes = E + V * 2
+
     print(noRoles)
     print(noScenes)
     print(noActors)
-    
-    # # Adding divas and dummy role constraints
-    # print("1 1")  
-    # print("1 2")
-    # print(f"1 {noActors}") 
 
-    # Type 1 Constraints
+    constraint_1 = []
     for i in range(V):
-        print(m, " ".join(str(i) for i in range(1, m + 1)))
-        # print("For role", i, "actors: ", " ".join(str(i) for i in range(1, m+1)))
+        constraint_1.append([i for i in range(1, m + 1)])
 
-    print(f"1 {m+1}")
-    print(f"1 {m+2}")
+    constraint_1.append([m + 1])
+    constraint_1.append([m + 2])
 
-    # Type 2 Constraints
+    constraint_2 = []
     for u, v in edges:
-        print(f"2 {u} {v}")
-    
+        constraint_2.append([u, v])
+
     for i in range(1, m + 1):
-        print(f"2 {E+1} {i}")
-        print(f"2 {E+2} {i}")
-# Example 
+        constraint_2.append([E + 1, i])
+        constraint_2.append([E + 2, i])
+
+    for actors in constraint_1:
+        print(len(actors), *actors)
+    for roles in constraint_2:
+        print(len(roles), *roles)
+
+
+# Example
 # V = 3
 # E = 3
 # m = 3
