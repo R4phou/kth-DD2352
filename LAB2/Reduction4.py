@@ -4,11 +4,11 @@ def perform_reduction(V, E, m, edges):
 
     scenes = []
     nonAlone = set()
-    for u, v in edges:
+    for u, v in edges: # E
         nonAlone.add(u)
         nonAlone.add(v)
-        scenes.append((u+4, v+4))
-    alone = list(set(range(1, V + 1)) - nonAlone)
+        scenes.append((u+3, v+3))
+    alone = list(set(range(1, V + 1)) - nonAlone) # E
 
     # alone = []
     # for i in range(1, V + 1):
@@ -17,7 +17,7 @@ def perform_reduction(V, E, m, edges):
 
     m = min(m, V)  # m cannot be greater than V
 
-    noRoles = V + 4
+    noRoles = V + 3
     noScenes = E + 2 + len(alone)
     noActors = m + 2
 
@@ -30,25 +30,24 @@ def perform_reduction(V, E, m, edges):
     print(1, 1)
     print(1, 2)
     print(1, 3)
-    print(1, 3)
 
     # T1 Other role constraints
-    for _ in range(V):
+    for _ in range(V): # V * m
         temp = []
         for j in range(1, m + 1):
             temp.append(j + 2)
         print(len(temp), *temp)
 
     # T2 standard constraints
-    for u, v in scenes:
+    for u, v in scenes: # E
         print(2, u, v)
     # T2 isolated constraints
-    for i in range(len(alone)):
-        print(2, 1, alone[i]+4)
+    for i in range(len(alone)): # E
+        print(2, 1, alone[i]+3)
 
     # T2 constraints for divas and dummies
     print(2, 1, 3)
-    print(2, 2, 4)
+    print(2, 2, 3)
 
 
 # Variables
